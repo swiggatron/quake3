@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dog_navigation"
+    app:startDestination="@id/actionList"
+    tools:ignore="UnusedNavigation">
+
+
+    <fragment
+        android:id="@+id/actionList"
+        android:name="com.example.android.quakereport.view.EarthQuakeFragment"
+        android:label="fragment_earthquake"
+        tools:layout="@layout/earthquake_activity">
+        <action
+            android:id="@+id/actionDetail"
+            app:destination="@id/actionDetail" />
+    </fragment>
+</navigation>
