@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android.quakereport.R;
-import com.example.android.quakereport.model.Properties;
+import com.example.android.quakereport.model.EarthQuakeResponse;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -20,14 +20,14 @@ import java.util.List;
 
 public class EarthQuakeAdapter extends RecyclerView.Adapter<EarthQuakeAdapter.EarthquakeViewHolder> {
 
+//
+    private ArrayList<EarthQuakeResponse.Feature> earthQuakes;
 
-    private ArrayList<Properties> earthQuakes;
-
-    public EarthQuakeAdapter(ArrayList<Properties> earthQuakes) {
+    public EarthQuakeAdapter(ArrayList<EarthQuakeResponse.Feature> earthQuakes) {
         this.earthQuakes = earthQuakes;
     }
 
-    public void updateEarthquakes(List<Properties> newEarthquakes) {
+    public void updateEarthquakes(List<EarthQuakeResponse.Feature> newEarthquakes) {
         earthQuakes.clear();
         earthQuakes.addAll(newEarthquakes);
         notifyDataSetChanged();
@@ -47,17 +47,17 @@ public class EarthQuakeAdapter extends RecyclerView.Adapter<EarthQuakeAdapter.Ea
         TextView date = holder.itemView.findViewById(R.id.date);
 
         GradientDrawable magnitudeCircle = (GradientDrawable) magnitude.getBackground();
-        int magnitudeColor = getMagnitudeColor(earthQuakes.get(position).getMag());
+        int magnitudeColor = getMagnitudeColor(earthQuakes.get(position).getProperties().getMag());
         magnitudeCircle.setColor(magnitudeColor);
         DecimalFormat format = new DecimalFormat("0.0");
-        String output = format.format(earthQuakes.get(position).getMag());
+        String output = format.format(earthQuakes.get(position).getProperties().getMag());
         magnitude.setText(output);
 
 
-        location.setText(earthQuakes.get(position).getPlace());
+        location.setText(earthQuakes.get(position).getProperties().getPlace());
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy\nh:mm a");
-        String dateView = dateFormatter.format(new Date(earthQuakes.get(position).getTime()));
+        String dateView = dateFormatter.format(new Date(earthQuakes.get(position).getProperties().getTime()));
         date.setText(dateView);
     }
 

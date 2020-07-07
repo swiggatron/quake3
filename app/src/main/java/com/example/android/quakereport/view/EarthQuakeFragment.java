@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.android.quakereport.R;
-import com.example.android.quakereport.model.Properties;
+import com.example.android.quakereport.model.EarthQuakeResponse;
 import com.example.android.quakereport.viewmodel.EarthquakeViewModel;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class EarthQuakeFragment extends Fragment {
 
     public EarthquakeViewModel viewModel;
 
-    public EarthQuakeAdapter quakeAdapter = new EarthQuakeAdapter(new ArrayList<Properties>());
+    public EarthQuakeAdapter quakeAdapter = new EarthQuakeAdapter(new ArrayList<EarthQuakeResponse.Feature>());
 
     @BindView(R.id.quakeList)
     RecyclerView quakeList;
@@ -91,9 +91,9 @@ public class EarthQuakeFragment extends Fragment {
     }
 
     private void observeViewModel() {
-        viewModel.earthquakes.observe(this, new Observer<List<Properties>>() {
+        viewModel.earthquakes.observe(this, new Observer<List<EarthQuakeResponse.Feature>>() {
             @Override
-            public void onChanged(List<Properties> earthquakes) {
+            public void onChanged(List<EarthQuakeResponse.Feature> earthquakes) {
                 if (earthquakes != null) {
                     quakeList.setVisibility(View.VISIBLE);
                     quakeAdapter.updateEarthquakes(earthquakes);

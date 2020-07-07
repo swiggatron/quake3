@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.android.quakereport.model.EarthQuakeApiService;
-import com.example.android.quakereport.model.Properties;
+import com.example.android.quakereport.model.EarthQuakeResponse;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 public class EarthquakeViewModel extends ViewModel {
 
 
-    public MutableLiveData<List<Properties>> earthquakes = new MutableLiveData<List<Properties>>();
+    public MutableLiveData<List<EarthQuakeResponse.Feature>> earthquakes = new MutableLiveData<List<EarthQuakeResponse.Feature>>();
     public MutableLiveData<Boolean> earthquakeLoadError = new MutableLiveData<Boolean>();
     public MutableLiveData<Boolean> loading = new MutableLiveData<Boolean>();
 
@@ -34,12 +34,16 @@ public class EarthquakeViewModel extends ViewModel {
                 earthquakeService.getEarthquakes()
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeWith(new DisposableSingleObserver<List<Properties>>() {
-                            @Override
-                            public void onSuccess(List<Properties> earthQuakes) {
+                        .subscribeWith(new DisposableSingleObserver<EarthQuakeResponse>() {
+
+                            public void onSuccess(List<EarthQuakeResponse.Feature> earthQuakes) {
                                 earthquakes.setValue(earthQuakes);
                                 earthquakeLoadError.setValue(false);
                                 loading.setValue(false);
+                            }
+
+                            public void onSuccess(EarthQuakeResponse earthQuakeResponse) {
+
                             }
 
                             @Override

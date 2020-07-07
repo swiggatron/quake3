@@ -22,7 +22,7 @@ public class EarthQuakeApiService {
                 .create(EarthQuakeApi.class);
     }
 
-    public Single<List<Properties>> getEarthquakes() {
+    public Single<EarthQuakeResponse> getEarthquakes() {
         return api.getEarthquakes();
     }
 }
