@@ -1,6 +1,8 @@
 package com.example.android.quakereport.model;
 
-import java.util.List;
+import com.example.android.quakereport.view.FrontPageFragment;
+
+import java.text.ParseException;
 
 import io.reactivex.Single;
 import retrofit2.Retrofit;
@@ -11,9 +13,14 @@ public class EarthQuakeApiService {
 
     public final String BASE_URL = "https://earthquake.usgs.gov/";
 
+
+    FrontPageFragment input = new FrontPageFragment();
+    String startTime = input.getStartTime();
+    String endTime = input.getEndTime();
+
     EarthQuakeApi api;
 
-    public EarthQuakeApiService() {
+    public EarthQuakeApiService() throws ParseException {
         api = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -23,6 +30,6 @@ public class EarthQuakeApiService {
     }
 
     public Single<EarthQuakeResponse> getEarthquakes() {
-        return api.getEarthquakes();
+        return api.getEarthquakes(startTime, endTime);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.android.quakereport.view;
 
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +19,33 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class EarthQuakeAdapter extends RecyclerView.Adapter<EarthQuakeAdapter.EarthquakeViewHolder> {
 
-//
     private ArrayList<EarthQuakeResponse.Feature> earthQuakes;
+
+
+    public class EarthquakeViewHolder extends RecyclerView.ViewHolder {
+        public View itemView;
+
+        public EarthquakeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            this.itemView = itemView;
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri earthquakeUri = Uri.parse(earthQuakes.get(getAdapterPosition()).getProperties().getUrl());
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW, earthquakeUri);
+
+                }
+
+            });
+
+        }
+    }
+
 
     public EarthQuakeAdapter(ArrayList<EarthQuakeResponse.Feature> earthQuakes) {
         this.earthQuakes = earthQuakes;
@@ -47,8 +71,7 @@ public class EarthQuakeAdapter extends RecyclerView.Adapter<EarthQuakeAdapter.Ea
         TextView date = holder.itemView.findViewById(R.id.date);
 
         GradientDrawable magnitudeCircle = (GradientDrawable) magnitude.getBackground();
-        int magnitudeColor = getMagnitudeColor(earthQuakes.get(position).getProperties().getMag());
-        magnitudeCircle.setColor(magnitudeColor);
+        magnitudeCircle.setColor(getMagnitudeColor(earthQuakes.get(position).getProperties().getMag()));
         DecimalFormat format = new DecimalFormat("0.0");
         String output = format.format(earthQuakes.get(position).getProperties().getMag());
         magnitude.setText(output);
@@ -56,17 +79,21 @@ public class EarthQuakeAdapter extends RecyclerView.Adapter<EarthQuakeAdapter.Ea
 
         location.setText(earthQuakes.get(position).getProperties().getPlace());
 
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy\nh:mm a");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM dd, yyyy\nh:mm a", Locale.ENGLISH);
         String dateView = dateFormatter.format(new Date(earthQuakes.get(position).getProperties().getTime()));
         date.setText(dateView);
+
+
     }
+
 
     @Override
     public int getItemCount() {
-        return 0;
+
+        return earthQuakes.size();
     }
 
-    private int getMagnitudeColor(double mag) {
+    public int getMagnitudeColor(double mag) {
         int magColor = (int) Math.floor(mag);
         switch (magColor) {
             case 1:
@@ -102,16 +129,6 @@ public class EarthQuakeAdapter extends RecyclerView.Adapter<EarthQuakeAdapter.Ea
 
         }
         return magColor;
-    }
-
-
-    class EarthquakeViewHolder extends RecyclerView.ViewHolder {
-        public View itemView;
-
-        public EarthquakeViewHolder(@NonNull View itemView) {
-            super(itemView);
-            this.itemView = itemView;
-        }
     }
 
 

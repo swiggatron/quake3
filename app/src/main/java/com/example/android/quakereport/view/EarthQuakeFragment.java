@@ -29,7 +29,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.android.quakereport.R;
 import com.example.android.quakereport.model.EarthQuakeResponse;
@@ -43,6 +42,8 @@ import butterknife.ButterKnife;
 
 public class EarthQuakeFragment extends Fragment {
 
+
+    public EarthQuakeAdapter.EarthquakeViewHolder viewHolder;
     public EarthquakeViewModel viewModel;
 
     public EarthQuakeAdapter quakeAdapter = new EarthQuakeAdapter(new ArrayList<EarthQuakeResponse.Feature>());
@@ -56,8 +57,6 @@ public class EarthQuakeFragment extends Fragment {
     @BindView(R.id.loadingView)
     ProgressBar loadView;
 
-    @BindView(R.id.refreshLayout)
-    SwipeRefreshLayout refreshLayout;
 
     public EarthQuakeFragment() {
         // Required empty public constructor
@@ -71,6 +70,7 @@ public class EarthQuakeFragment extends Fragment {
 
         ButterKnife.bind(this, view);
         return view;
+
     }
 
     @Override
@@ -88,6 +88,8 @@ public class EarthQuakeFragment extends Fragment {
         quakeList.setAdapter(quakeAdapter);
 
         observeViewModel();
+
+
     }
 
     private void observeViewModel() {
@@ -123,6 +125,7 @@ public class EarthQuakeFragment extends Fragment {
 
     }
 }
+
 
 
 

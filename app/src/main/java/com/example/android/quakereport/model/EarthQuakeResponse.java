@@ -1,8 +1,6 @@
 
 package com.example.android.quakereport.model;
 
-import com.google.android.gms.common.Feature;
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -62,16 +60,15 @@ public class EarthQuakeResponse {
         public class Properties {
 
             @SerializedName("mag")
-
             private Double mag;
+
             @SerializedName("place")
-
             private String place;
+
             @SerializedName("time")
-
             private Long time;
-            @SerializedName("url")
 
+            @SerializedName("url")
             private String url;
 
             public Double getMag() {

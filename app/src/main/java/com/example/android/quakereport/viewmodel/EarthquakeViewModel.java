@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.android.quakereport.model.EarthQuakeApiService;
 import com.example.android.quakereport.model.EarthQuakeResponse;
 
+import java.text.ParseException;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -23,6 +24,9 @@ public class EarthquakeViewModel extends ViewModel {
     private EarthQuakeApiService earthquakeService = new EarthQuakeApiService();
     private CompositeDisposable disposable = new CompositeDisposable();
 
+    public EarthquakeViewModel() throws ParseException {
+    }
+
 
     public void refresh() {
         fetchFromRemote();
@@ -36,15 +40,12 @@ public class EarthquakeViewModel extends ViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeWith(new DisposableSingleObserver<EarthQuakeResponse>() {
 
-                            public void onSuccess(List<EarthQuakeResponse.Feature> earthQuakes) {
-                                earthquakes.setValue(earthQuakes);
+                            public void onSuccess(EarthQuakeResponse earthQuakeResponse) {
+                                earthquakes.setValue(earthQuakeResponse.getFeatures());
                                 earthquakeLoadError.setValue(false);
                                 loading.setValue(false);
                             }
 
-                            public void onSuccess(EarthQuakeResponse earthQuakeResponse) {
-
-                            }
 
                             @Override
                             public void onError(Throwable e) {
@@ -61,5 +62,6 @@ public class EarthquakeViewModel extends ViewModel {
         super.onCleared();
         disposable.clear();
     }
+
 }
 

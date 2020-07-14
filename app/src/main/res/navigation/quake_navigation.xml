@@ -2,18 +2,25 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dog_navigation"
-    app:startDestination="@id/actionList"
-    tools:ignore="UnusedNavigation">
-
+    android:id="@+id/quake_navigation"
+    app:startDestination="@id/frontPageFragment">
 
     <fragment
-        android:id="@+id/actionList"
+        android:id="@+id/frontPageFragment"
+        android:name="com.example.android.quakereport.view.FrontPageFragment"
+        android:label="earthquake_frontpage"
+        tools:layout="@layout/earthquake_frontpage">
+        <action
+            android:id="@+id/actionEarthQuakeFragment"
+            app:destination="@id/earthQuakeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/earthQuakeFragment"
         android:name="com.example.android.quakereport.view.EarthQuakeFragment"
-        android:label="fragment_earthquake"
+        android:label="earthquake_activity"
         tools:layout="@layout/earthquake_activity">
         <action
-            android:id="@+id/actionDetail"
-            app:destination="@id/actionDetail" />
+            android:id="@+id/actionFrontPageFragment"
+            app:destination="@id/frontPageFragment" />
     </fragment>
 </navigation>

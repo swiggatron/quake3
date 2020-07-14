@@ -1,12 +1,12 @@
 package com.example.android.quakereport.model;
 
-import java.util.List;
-
 import io.reactivex.Single;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public interface EarthQuakeApi {
 
-    @GET("fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10")
-    Single<EarthQuakeResponse> getEarthquakes();
+    @GET("fdsnws/event/1/query?format=geojson&eventtype=earthquake&starttime={starttime}&endtime={endtime}&orderby=time&minmag=6&limit=20")
+    Single<EarthQuakeResponse> getEarthquakes(@Path("starttime") String startTime, @Path("endtime") String endTime);
+
 }
