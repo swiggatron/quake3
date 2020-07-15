@@ -10,11 +10,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.android.quakereport.R;
-import com.example.android.quakereport.viewmodel.EarthquakeViewModel;
 
 public class MainActivity extends AppCompatActivity {
     private NavController navController;
-    private EarthquakeViewModel earthquakeViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

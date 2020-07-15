@@ -46,7 +46,7 @@ public class EarthQuakeFragment extends Fragment {
     public EarthQuakeAdapter.EarthquakeViewHolder viewHolder;
     public EarthquakeViewModel viewModel;
 
-    public EarthQuakeAdapter quakeAdapter = new EarthQuakeAdapter(new ArrayList<EarthQuakeResponse.Feature>());
+    public EarthQuakeAdapter quakeAdapter = new EarthQuakeAdapter(new ArrayList<EarthQuakeResponse.Feature>(), getContext());
 
     @BindView(R.id.quakeList)
     RecyclerView quakeList;
@@ -125,6 +125,7 @@ public class EarthQuakeFragment extends Fragment {
         });
 
     }
+
 }
 
 

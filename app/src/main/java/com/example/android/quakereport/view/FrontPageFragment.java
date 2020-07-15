@@ -1,7 +1,6 @@
 package com.example.android.quakereport.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +28,13 @@ import butterknife.ButterKnife;
 
 public class FrontPageFragment extends Fragment {
 
-    String url;
+
     private EarthquakeViewModel viewModel;
     String startTime;
     String endTime;
-    MaterialDatePicker.Builder builder;
-    MaterialDatePicker startPicker;
-    MaterialDatePicker endPicker;
+    MaterialDatePicker.Builder<Long> builder;
+    MaterialDatePicker<Long> startPicker;
+    MaterialDatePicker<Long> endPicker;
     TextView start;
     TextView end;
     TextView startDate;
@@ -91,7 +90,7 @@ public class FrontPageFragment extends Fragment {
         startPicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
             @Override
             public void onPositiveButtonClick(Object selection) {
-                startDate.setText(dateFormatter.format(Long.parseLong(startPicker.getSelection().toString())));
+                startDate.setText(startPicker.getHeaderText());
                 startTime = dateFormatter.format(Long.parseLong(startPicker.getSelection().toString()));
 
             }
@@ -116,27 +115,12 @@ public class FrontPageFragment extends Fragment {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 viewModel.setStartTime(startTime);
                 viewModel.setEndTime(endTime);
-                Log.d("URL", "onClick" + url);
                 navController.navigate(R.id.actionEarthQuakeFragment);
 
             }
         });
     }
 
-
-    public String getStartTime() {
-
-
-        return startTime;
-    }
-
-    public String getEndTime() {
-
-
-        return endTime;
-    }
 }

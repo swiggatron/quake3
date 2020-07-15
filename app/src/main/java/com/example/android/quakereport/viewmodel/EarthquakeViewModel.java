@@ -1,13 +1,13 @@
 package com.example.android.quakereport.viewmodel;
 
-import androidx.lifecycle.LiveData;
+import android.net.Uri;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.android.quakereport.model.EarthQuakeApiService;
 import com.example.android.quakereport.model.EarthQuakeResponse;
 
-import java.text.ParseException;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,6 +17,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EarthquakeViewModel extends ViewModel {
 
+    private MutableLiveData<Uri> earthquakeUri = new MutableLiveData<>();
     private MutableLiveData<String> startTime = new MutableLiveData<>();
     private MutableLiveData<String> endTime = new MutableLiveData<>();
     public MutableLiveData<List<EarthQuakeResponse.Feature>> earthquakes = new MutableLiveData<List<EarthQuakeResponse.Feature>>();
@@ -27,24 +28,22 @@ public class EarthquakeViewModel extends ViewModel {
     private CompositeDisposable disposable = new CompositeDisposable();
 
 
-    public EarthquakeViewModel() throws ParseException {
+    public EarthquakeViewModel() {
+    }
+
+    public void setEarthquakeUri(Uri input) {
+        earthquakeUri.setValue(input);
     }
 
     public void setStartTime(String input) {
         startTime.setValue(input);
     }
 
-    public LiveData<String> getStartTime() {
-        return startTime;
-    }
 
     public void setEndTime(String input) {
         endTime.setValue(input);
     }
 
-    public LiveData<String> getEndTime() {
-        return endTime;
-    }
 
     public void refresh() {
         fetchFromRemote();
@@ -53,7 +52,7 @@ public class EarthquakeViewModel extends ViewModel {
     private void fetchFromRemote() {
         loading.setValue(true);
         disposable.add(
-                earthquakeService.getEarthquakes(startTime, endTime)
+                earthquakeService.getEarthquakes(startTime.getValue(), endTime.getValue())
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeWith(new DisposableSingleObserver<EarthQuakeResponse>() {
