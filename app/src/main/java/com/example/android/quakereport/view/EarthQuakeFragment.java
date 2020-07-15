@@ -108,6 +108,7 @@ public class EarthQuakeFragment extends Fragment {
                 if (isError != null) ;
                 listError.setVisibility(isError ? View.VISIBLE : View.GONE);
 
+
             }
         });
         viewModel.loading.observe(this, new Observer<Boolean>() {

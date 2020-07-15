@@ -1,6 +1,6 @@
 package com.example.android.quakereport.model;
 
-import com.example.android.quakereport.view.FrontPageFragment;
+import androidx.lifecycle.MutableLiveData;
 
 import java.text.ParseException;
 
@@ -14,10 +14,6 @@ public class EarthQuakeApiService {
     public final String BASE_URL = "https://earthquake.usgs.gov/";
 
 
-    FrontPageFragment input = new FrontPageFragment();
-    String startTime = input.getStartTime();
-    String endTime = input.getEndTime();
-
     EarthQuakeApi api;
 
     public EarthQuakeApiService() throws ParseException {
@@ -29,7 +25,7 @@ public class EarthQuakeApiService {
                 .create(EarthQuakeApi.class);
     }
 
-    public Single<EarthQuakeResponse> getEarthquakes() {
+    public Single<EarthQuakeResponse> getEarthquakes(MutableLiveData<String> startTime, MutableLiveData<String> endTime) {
         return api.getEarthquakes(startTime, endTime);
     }
 }

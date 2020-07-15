@@ -1,6 +1,7 @@
 package com.example.android.quakereport.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +11,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.android.quakereport.R;
+import com.example.android.quakereport.viewmodel.EarthquakeViewModel;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -28,9 +29,8 @@ import butterknife.ButterKnife;
 
 public class FrontPageFragment extends Fragment {
 
-
-    String sTime;
-    String eTime;
+    String url;
+    private EarthquakeViewModel viewModel;
     String startTime;
     String endTime;
     MaterialDatePicker.Builder builder;
@@ -42,10 +42,18 @@ public class FrontPageFragment extends Fragment {
     TextView endDate;
     @BindView(R.id.search_button)
     Button search;
+    final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
 
     public FrontPageFragment() {
         //required empty public constructor
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModel = ViewModelProviders.of(getActivity()).get(EarthquakeViewModel.class);
+
     }
 
     @Override
@@ -83,8 +91,8 @@ public class FrontPageFragment extends Fragment {
         startPicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
             @Override
             public void onPositiveButtonClick(Object selection) {
-                startDate.setText(startPicker.getHeaderText());
-                sTime = (startPicker.getSelection().toString());
+                startDate.setText(dateFormatter.format(Long.parseLong(startPicker.getSelection().toString())));
+                startTime = dateFormatter.format(Long.parseLong(startPicker.getSelection().toString()));
 
             }
         });
@@ -101,31 +109,34 @@ public class FrontPageFragment extends Fragment {
             @Override
             public void onPositiveButtonClick(Object selection) {
                 endDate.setText(endPicker.getHeaderText());
-                eTime = (endPicker.getSelection().toString());
+                endTime = dateFormatter.format(Long.parseLong(endPicker.getSelection().toString()));
             }
         });
         final NavController navController = Navigation.findNavController(getActivity(), R.id.navHostFragment);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                viewModel.setStartTime(startTime);
+                viewModel.setEndTime(endTime);
+                Log.d("URL", "onClick" + url);
                 navController.navigate(R.id.actionEarthQuakeFragment);
+
             }
         });
     }
 
-    final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
-    public String getStartTime() throws ParseException {
-        Date sDate = dateFormatter.parse(sTime);
-        assert sDate != null;
-        startTime = dateFormatter.format(sDate);
+    public String getStartTime() {
+
+
         return startTime;
     }
 
-    public String getEndTime() throws ParseException {
-        Date eDate = dateFormatter.parse(eTime);
-        assert eDate != null;
-        endTime = dateFormatter.format(eDate);
+    public String getEndTime() {
+
+
         return endTime;
     }
 }

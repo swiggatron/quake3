@@ -1,5 +1,6 @@
 package com.example.android.quakereport.viewmodel;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -16,7 +17,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class EarthquakeViewModel extends ViewModel {
 
-
+    private MutableLiveData<String> startTime = new MutableLiveData<>();
+    private MutableLiveData<String> endTime = new MutableLiveData<>();
     public MutableLiveData<List<EarthQuakeResponse.Feature>> earthquakes = new MutableLiveData<List<EarthQuakeResponse.Feature>>();
     public MutableLiveData<Boolean> earthquakeLoadError = new MutableLiveData<Boolean>();
     public MutableLiveData<Boolean> loading = new MutableLiveData<Boolean>();
@@ -24,9 +26,25 @@ public class EarthquakeViewModel extends ViewModel {
     private EarthQuakeApiService earthquakeService = new EarthQuakeApiService();
     private CompositeDisposable disposable = new CompositeDisposable();
 
+
     public EarthquakeViewModel() throws ParseException {
     }
 
+    public void setStartTime(String input) {
+        startTime.setValue(input);
+    }
+
+    public LiveData<String> getStartTime() {
+        return startTime;
+    }
+
+    public void setEndTime(String input) {
+        endTime.setValue(input);
+    }
+
+    public LiveData<String> getEndTime() {
+        return endTime;
+    }
 
     public void refresh() {
         fetchFromRemote();
@@ -35,7 +53,7 @@ public class EarthquakeViewModel extends ViewModel {
     private void fetchFromRemote() {
         loading.setValue(true);
         disposable.add(
-                earthquakeService.getEarthquakes()
+                earthquakeService.getEarthquakes(startTime, endTime)
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeWith(new DisposableSingleObserver<EarthQuakeResponse>() {
@@ -52,6 +70,7 @@ public class EarthquakeViewModel extends ViewModel {
                                 earthquakeLoadError.setValue(true);
                                 loading.setValue(false);
                                 e.printStackTrace();
+
                             }
                         })
         );
