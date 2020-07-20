@@ -3,7 +3,10 @@ package com.example.android.quakereport.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class EarthQuakeResponse {
 
@@ -71,16 +74,18 @@ public class EarthQuakeResponse {
             @SerializedName("url")
             private String url;
 
-            public Double getMag() {
-                return mag;
+            public String getMag() {
+                DecimalFormat format = new DecimalFormat("0.0");
+                return format.format(mag);
             }
 
-            public  String getPlace() {
+            public String getPlace() {
                 return place;
             }
 
-            public Long getTime() {
-                return time;
+            public String getTime() {
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM dd, yyyy\nh:mm a", Locale.ENGLISH);
+                return dateFormatter.format(time);
             }
 
             public String getUrl() {

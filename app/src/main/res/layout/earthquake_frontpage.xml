@@ -34,7 +34,7 @@
         android:id="@+id/startDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="212dp"
+        android:layout_marginTop="192dp"
         android:background="@drawable/start_button"
         android:text="Start Date"
         android:textAlignment="center"

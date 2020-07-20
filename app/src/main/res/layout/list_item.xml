@@ -1,58 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:id="@+id/list_layout">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/magnitude"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_gravity="center_vertical"
-        android:background="@drawable/magnitude_circle"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
+    <data>
 
-        />
+        <variable
+            name="adapter"
+            type="com.example.android.quakereport.view.EarthQuakeAdapter" />
+
+        <variable
+            name="listener"
+            type="com.example.android.quakereport.view.OnQuakeListener" />
+
+        <variable
+            name="earthquake"
+            type="com.example.android.quakereport.model.EarthQuakeResponse.Feature" />
+
+    </data>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textAlignment="viewEnd"
-        android:layout_gravity="center_vertical"
-        android:gravity="end">
-
-
+        android:id="@+id/list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:onClick="@{listener::onQuakeClicked}"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/location"
-            android:padding="0dp"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textAlignment="viewEnd"
+            android:id="@+id/quakeUrl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{String.valueOf(earthquake.Properties.url)}"
+            android:visibility="gone" />
 
-            android:gravity="end" />
+        <TextView
+            android:id="@+id/magnitude"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/magnitude_circle"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:backgroundTint="@{adapter.getMagnitudeColor()}"
+            android:text="@{earthquake.Properties.mag}"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:orientation="vertical"
+            android:textAlignment="viewEnd">
+
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:padding="0dp"
+                android:text="@{earthquake.Properties.place}"
+                android:textAlignment="viewEnd"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:padding="8dp"
+            android:text="@{earthquake.Properties.time}"
+            android:textAlignment="viewEnd"
+            android:textStyle="bold" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/date"
-        android:textAlignment="viewEnd"
-        android:padding="8dp"
-        android:gravity="end"
-        android:layout_gravity="center_vertical"
-        android:textStyle="bold"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
-</LinearLayout>
+</layout>
